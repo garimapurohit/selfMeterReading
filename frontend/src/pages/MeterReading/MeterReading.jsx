@@ -48,9 +48,15 @@ const MeterReading = () => {
 
     if (!fields.caNumber.trim())
       errs.caNumber = "CA Number is required.";
+    else if (!/^\d+$/.test(fields.caNumber)) {
+      errs.caNumber = "CA Number must contain digits only.";
+    }
 
     if (!fields.meterNumber.trim())
       errs.meterNumber = "Meter Number is required.";
+    else if(!/^\d+$/.test(fields.meterNumber)){
+      errs.meterNumber = "Meter Number must contain digits only.";
+    }
 
     if (!fields.readingDate) {
       errs.readingDate = "Reading Date is required.";

@@ -28,9 +28,8 @@ const ReadingForm = ({
         </p>
       </div>
 
-      <form className="rform" onSubmit={onSave} noValidate>
-
-        {/* Row 1: CA Number + Meter Number */}
+      <form className="rform" onSubmit={onSave} Validate>
+       {/* Here in this row added two fields that are CA number and meter number.. both the field are compulsory and verifies for the correct data type */}
         <div className="rform__row">
           <div className="rform__field">
             <label className="rform__label" htmlFor="caNumber">
