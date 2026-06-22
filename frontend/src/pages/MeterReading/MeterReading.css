@@ -1,0 +1,36 @@
+/* ---- Reset ---- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---- Page Shell ---- */
+.meter-page {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #eef1f6;
+  display: flex;
+  flex-direction: column;
+  font-family: "Segoe UI", "Inter", Arial, sans-serif;
+  color: #1a2340;
+  overflow-x: hidden;
+}
+
+/* ---- Main Content Area ---- */
+.meter-page__main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 16px 48px;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 640px) {
+  .meter-page__main {
+    padding: 20px 12px 40px;
+  }
+}

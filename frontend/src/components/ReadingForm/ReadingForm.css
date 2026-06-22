@@ -1,0 +1,242 @@
+/* ---- Card Shell ---- */
+.rform__card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(13, 43, 110, 0.10), 0 1px 4px rgba(0, 0, 0, 0.06);
+  width: 95%;
+  max-width: 1000px;
+  overflow: hidden;
+}
+
+.rform__card-header {
+  background: #f4f7fd;
+  border-bottom: 1px solid #dde4f0;
+  padding: 20px 32px;
+}
+
+.rform__card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0d2b6e;
+  margin-bottom: 4px;
+}
+
+.rform__card-subtitle {
+  font-size: 13px;
+  color: #5c6b8a;
+  line-height: 1.5;
+}
+
+/* ---- Form Layout ---- */
+.rform {
+  padding: 28px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.rform__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* ---- Field ---- */
+.rform__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rform__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2d3b5e;
+  letter-spacing: 0.3px;
+}
+
+.rform__required {
+  color: #c0392b;
+  margin-left: 2px;
+}
+
+/* ---- Input ---- */
+.rform__input {
+  height: 42px;
+  padding: 0 14px;
+  border: 1.5px solid #c8d3e8;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1a2340;
+  background: #fafbff;
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  width: 100%;
+}
+
+.rform__input:hover {
+  border-color: #7e9cd1;
+}
+
+.rform__input:focus {
+  border-color: #1746b0;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(23, 70, 176, 0.12);
+}
+
+.rform__input--error {
+  border-color: #c0392b;
+  background: #fff8f7;
+}
+
+.rform__input--error:focus {
+  border-color: #c0392b;
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.10);
+}
+
+.rform__input--date {
+  cursor: pointer;
+}
+
+.rform__input[type="number"]::-webkit-inner-spin-button,
+.rform__input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.rform__input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* ---- Unit Badge ---- */
+.rform__unit-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.rform__input--unit {
+  padding-right: 56px;
+}
+
+.rform__unit-badge {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #4a6098;
+  background: #eef2fb;
+  border: 1.5px solid #c8d3e8;
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  letter-spacing: 0.3px;
+  pointer-events: none;
+}
+
+/* ---- Error Message ---- */
+.rform__error {
+  font-size: 12px;
+  color: #c0392b;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+}
+
+.rform__error::before {
+  content: "⚠";
+  font-size: 11px;
+}
+
+/* ---- Action Buttons ---- */
+.rform__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 20px;
+  border-top: 1px solid #eaeff9;
+  margin-top: 8px;
+}
+
+.rform__btn {
+  height: 44px;
+  padding: 0 28px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: background 0.16s ease, transform 0.1s ease, box-shadow 0.16s ease;
+  letter-spacing: 0.3px;
+}
+
+.rform__btn:active {
+  transform: scale(0.97);
+}
+
+.rform__btn--primary {
+  background: #1746b0;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(23, 70, 176, 0.28);
+}
+
+.rform__btn--primary:hover {
+  background: #0d2b6e;
+  box-shadow: 0 4px 14px rgba(13, 43, 110, 0.35);
+}
+
+.rform__btn--primary:focus-visible {
+  box-shadow: 0 0 0 3px rgba(23, 70, 176, 0.30);
+}
+
+.rform__btn--secondary {
+  background: #ffffff;
+  color: #2d3b5e;
+  border: 1.5px solid #c8d3e8;
+}
+
+.rform__btn--secondary:hover {
+  background: #f0f5ff;
+  border-color: #7e9cd1;
+}
+
+.rform__btn--secondary:focus-visible {
+  box-shadow: 0 0 0 3px rgba(23, 70, 176, 0.15);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 640px) {
+  .rform__card-header {
+    padding: 16px 20px;
+  }
+
+  .rform {
+    padding: 20px 20px 24px;
+    gap: 18px;
+  }
+
+  .rform__row {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .rform__actions {
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
+  .rform__btn {
+    width: 100%;
+  }
+
+  .rform__card-title {
+    font-size: 17px;
+  }
+}
