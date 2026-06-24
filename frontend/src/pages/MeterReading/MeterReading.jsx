@@ -6,8 +6,8 @@ import Footer from "../../components/Footer/Footer";
 import ReadingForm from "../../components/ReadingForm/ReadingForm";
 import imageUpload from "../../components/ImageUpload/ImageUpload";
 
-// ── Initial state ──────────────────────────────────────────
-const INITIAL_FORM = {
+// intially the form will have these values- and when user press clear it will reset to these valuse only
+const FormInitial = {
   caNumber: "",
   meterNumber: "",
   readingDate: "",
@@ -15,8 +15,8 @@ const INITIAL_FORM = {
   kvh: "",
   meterImage: null,
 };
-
-const INITIAL_ERRORS = {
+// At starting ther won't be error it will be visble,,, after userr clickss the save button
+const ErrorsInitial = {
   caNumber: "",
   meterNumber: "",
   readingDate: "",
@@ -24,39 +24,39 @@ const INITIAL_ERRORS = {
   kvh: "",
   meterImage: "",
 };
-
-// ── Helpers ────────────────────────────────────────────────
+// converted string to get the date format.. becoz we need to compareee..
 const getTodayStr = () => new Date().toISOString().split("T")[0];
+// we need to get the state two days ago...
+// Here we take days given by user as input and calculate the  date that was 2 days before...
+// this was done so that the user cannot upload reading of many days before..
 
 const getDaysAgoStr = (days) => {
   const d = new Date();
   d.setDate(d.getDate() - days);
   return d.toISOString().split("T")[0];
 };
-
-// ── Page Component ─────────────────────────────────────────
+// for storing the valuse...of the components..
 const MeterReading = () => {
-  const [form, setForm] = useState(INITIAL_FORM);
-  const [errors, setErrors] = useState(INITIAL_ERRORS);
+  const [form, setForm] = useState(FormInitial);
+  const [errors, setErrors] = useState(ErrorsInitial);
   const [imagePreview, setImagePreview] = useState(null);
+// this is for edge case handling and to verify if user enter the correct data or not.. 
 
-  // ── Validation ───────────────────────────────────────────
+// this is will hit when we click on save button 
   const validate = (fields) => {
-    const errs = { ...INITIAL_ERRORS };
+    const errs = { ...ErrorsInitial };
     const today = getTodayStr();
     const twoDaysAgo = getDaysAgoStr(2);
 
     if (!fields.caNumber.trim())
       errs.caNumber = "CA Number is required.";
+    // to check...if only digit type is entered as data  
     else if (!/^\d+$/.test(fields.caNumber)) {
       errs.caNumber = "CA Number must contain digits only.";
     }
 
     if (!fields.meterNumber.trim())
       errs.meterNumber = "Meter Number is required.";
-    else if(!/^\d+$/.test(fields.meterNumber)){
-      errs.meterNumber = "Meter Number must contain digits only.";
-    }
 
     if (!fields.readingDate) {
       errs.readingDate = "Reading Date is required.";
@@ -84,13 +84,12 @@ const MeterReading = () => {
     return errs;
   };
 
-  // ── Handlers ─────────────────────────────────────────────
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
+  // this is when user uploads image we neet to check if the image upload is correct and yes so it will set the image 
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -123,7 +122,7 @@ const MeterReading = () => {
     const hasErrors = Object.values(errs).some((msg) => msg !== "");
     if (hasErrors) return;
 
-    console.log("=== Meter Reading Submission ===");
+    console.log("Meter Reading Submission:");
     console.log({
       caNumber: form.caNumber,
       meterNumber: form.meterNumber,
@@ -136,12 +135,12 @@ const MeterReading = () => {
         type: form.meterImage.type,
       },
     });
-    console.log("================================");
+    console.log("Api  HIT=");
   };
 
   const handleClear = () => {
-    setForm(INITIAL_FORM);
-    setErrors(INITIAL_ERRORS);
+    setForm(FormInitial);
+    setErrors(ErrorsInitial);
     setImagePreview(null);
     const fileInput = document.getElementById("meterImage");
     if (fileInput) fileInput.value = "";
