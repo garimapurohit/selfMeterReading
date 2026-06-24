@@ -1,7 +1,9 @@
 const db = require("../db/db");
 
+// to create a new reading
 const createReading = (req, res) => {
   console.log("NEW CONTROLLER RUNNING");
+
   const {
     caNumber,
     meterNumber,
@@ -17,8 +19,6 @@ const createReading = (req, res) => {
     [caNumber, meterNumber, readingDate, kwh, kvh],
     function (err) {
       if (err) {
-        console.error(err);
-
         return res.status(500).json({
           success: false,
           message: "Failed to save reading",
@@ -34,4 +34,29 @@ const createReading = (req, res) => {
   );
 };
 
-module.exports = { createReading };
+
+// GET ALL READINGS
+const getAllReadings = (req, res) => {
+  db.all(
+    "SELECT * FROM meter_readings",
+    [],
+    (err, rows) => {
+      if (err) {
+        return res.status(500).json({
+          success: false,
+          message: "Failed to fetch readings",
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        data: rows,
+      });
+    }
+  );
+};
+
+module.exports = {
+  createReading,
+  getAllReadings,
+};
