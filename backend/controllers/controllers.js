@@ -8,7 +8,7 @@ const createReading = (req, res) => {
     kwh,
     kvh,
   } = req.body;
-    console.log(caNumber);
+  console.log(caNumber);
 
   res.status(200).json({
     success: true,
