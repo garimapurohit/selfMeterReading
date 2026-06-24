@@ -1,9 +1,6 @@
 const db = require("../db/db");
-
 // to create a new reading
 const createReading = (req, res) => {
-  console.log("NEW CONTROLLER RUNNING");
-
   const {
     caNumber,
     meterNumber,
@@ -11,7 +8,6 @@ const createReading = (req, res) => {
     kwh,
     kvh,
   } = req.body;
-
   db.run(
     `INSERT INTO meter_readings
      (caNumber, meterNumber, readingDate, kwh, kvh)
@@ -34,7 +30,6 @@ const createReading = (req, res) => {
   );
 };
 
-
 // GET ALL READINGS
 const getAllReadings = (req, res) => {
   db.all(
@@ -55,8 +50,34 @@ const getAllReadings = (req, res) => {
     }
   );
 };
+const getReadingsById = (req, res) => {
+  db.get(
+    "SELECT * FROM meter_readings WHERE RegisterId = ?",
+    [req.params.id],
+    (err, row) => {
+      if (err) {
+        return res.status(500).json({
+          success: false,
+          message: "Unable to get reading",
+        });
+      }
 
+      if (!row) {
+        return res.status(404).json({
+          success: false,
+          message: "Reading not found",
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        data: row,
+      });
+    }
+  );
+};
 module.exports = {
   createReading,
   getAllReadings,
+  getReadingsById,
 };
