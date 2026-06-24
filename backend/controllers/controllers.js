@@ -1,6 +1,7 @@
 const db = require("../db/db");
+
 const createReading = (req, res) => {
-  console.log("BODY:", req.body);
+  console.log("NEW CONTROLLER RUNNING");
   const {
     caNumber,
     meterNumber,
@@ -8,12 +9,29 @@ const createReading = (req, res) => {
     kwh,
     kvh,
   } = req.body;
-  console.log(caNumber);
 
-  res.status(200).json({
-    success: true,
-    message: "Reading received successfully",
-  });
+  db.run(
+    `INSERT INTO meter_readings
+     (caNumber, meterNumber, readingDate, kwh, kvh)
+     VALUES (?, ?, ?, ?, ?)`,
+    [caNumber, meterNumber, readingDate, kwh, kvh],
+    function (err) {
+      if (err) {
+        console.error(err);
+
+        return res.status(500).json({
+          success: false,
+          message: "Failed to save reading",
+        });
+      }
+
+      res.status(201).json({
+        success: true,
+        message: "Reading saved successfully",
+        registerId: this.lastID,
+      });
+    }
+  );
 };
 
 module.exports = { createReading };
