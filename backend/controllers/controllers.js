@@ -30,7 +30,8 @@ const createReading = (req, res) => {
   );
 };
 
-// GET ALL READINGS
+// to get all readings in the database 
+
 const getAllReadings = (req, res) => {
   db.all(
     "SELECT * FROM meter_readings",
