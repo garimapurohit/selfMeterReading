@@ -9,7 +9,7 @@ const ImageUpload = ({ file, preview, error, onChange }) => {
       </label>
 
       <div
-        className={`imgUploadArea0
+        className={`imgUploadArea
           ${error ? "imgUploadArea_error" : ""}
           ${preview ? "imgUploadArea_hasfile" : ""}
         `}
