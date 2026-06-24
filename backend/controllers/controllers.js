@@ -76,8 +76,35 @@ const getReadingsById = (req, res) => {
     }
   );
 };
+const getReadingsByCaNumber = (req, res) => {
+  db.get(
+    "SELECT * FROM meter_readings WHERE caNumber = ?",
+    [req.params.caNumber],
+    (err, row) => {
+      if (err) {
+        return res.status(500).json({
+          success: false,
+          message: "Unable to get reading",
+        });
+      }
+
+      if (!row) {
+        return res.status(404).json({
+          success: false,
+          message: "Reading not found",
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        data: row,
+      });
+    }
+  );
+};
 module.exports = {
   createReading,
   getAllReadings,
   getReadingsById,
+  getReadingsByCaNumber,
 };

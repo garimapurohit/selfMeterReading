@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 require("./db/initDB");
 
-console.log(__dirname);
 console.log("ROUTES FILE LOADED");
 
 
