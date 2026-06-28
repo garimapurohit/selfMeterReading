@@ -1,6 +1,9 @@
 const db = require("../db/db");
 // to create a new reading
 const createReading = (req, res) => {
+  console.log("BODY:", req.body);
+  console.log("FILE:", req.file);
+
   const {
     caNumber,
     meterNumber,
@@ -8,11 +11,21 @@ const createReading = (req, res) => {
     kwh,
     kvh,
   } = req.body;
+
+  const imageName = req.file.filename;
+
   db.run(
     `INSERT INTO meter_readings
-     (caNumber, meterNumber, readingDate, kwh, kvh)
-     VALUES (?, ?, ?, ?, ?)`,
-    [caNumber, meterNumber, readingDate, kwh, kvh],
+     (caNumber, meterNumber, readingDate, kwh, kvh, imageName)
+     VALUES (?, ?, ?, ?, ?, ?)`,
+    [
+      caNumber,
+      meterNumber,
+      readingDate,
+      kwh,
+      kvh,
+      imageName,
+    ],
     function (err) {
       if (err) {
         return res.status(500).json({
@@ -29,9 +42,7 @@ const createReading = (req, res) => {
     }
   );
 };
-
 // to get all readings in the database 
-
 const getAllReadings = (req, res) => {
   db.all(
     "SELECT * FROM meter_readings",
@@ -109,3 +120,4 @@ module.exports = {
   getReadingsById,
   getReadingsByCaNumber,
 };
+

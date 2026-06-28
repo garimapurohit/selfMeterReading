@@ -19,6 +19,12 @@ app.use((req, res, next) => {
   next();
 });
 
+const path = require("path");
+
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "uploads"))
+);
 app.use("/api/readings", readingRoutes);
 
 app.listen(5000, () => {
