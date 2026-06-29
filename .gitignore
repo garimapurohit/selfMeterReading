@@ -54,6 +54,15 @@ Thumbs.db
 # Coverage Reports
 # =========================
 coverage/
+# =========================
+# SQLite Database
+# =========================
+*.sqlite
+*.sqlite3
+*.db
+backend/db/*.sqlite
+backend/db/*.sqlite3
+backend/db/*.db
 
 # =========================
 # Vite

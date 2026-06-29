@@ -6,6 +6,7 @@ console.log("ROUTES FILE LOADED");
 
 
 const readingRoutes = require("./routes/readingRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(
   express.static(path.join(__dirname, "uploads"))
 );
 app.use("/api/readings", readingRoutes);
+app.use("/api/auth", authRoutes);
 
 app.listen(5000, () => {
   console.log("Server running on port 5000");
