@@ -5,8 +5,6 @@ import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import ReadingForm from "../../components/ReadingForm/ReadingForm";
 // intially the form will have these values- and when user press clear it will reset to these valuse only
-
-
 const FormInitial = {
   caNumber: "",
   meterNumber: "",
@@ -226,5 +224,4 @@ const MeterReading = () => {
     </div>
   );
 };
-
 export default MeterReading;

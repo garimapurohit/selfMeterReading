@@ -7,6 +7,8 @@ const {
   verifyOtp,
   login,
   verifyLogin,
+  getUsers,
+  getOtps,
 } = require("../controllers/authController");
 
 // Define POST route for user registration
@@ -28,6 +30,10 @@ router.post("/login", login);
 // Route: POST /api/auth/verify-login
 // Calls the verifyLogin function from authController
 router.post("/verify-login", verifyLogin);
+
+// Define GET routes for debugging
+router.get("/users", getUsers);
+router.get("/otps", getOtps);
 
 // Export the router to be used in server.js
 module.exports = router;

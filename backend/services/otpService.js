@@ -56,13 +56,13 @@ const generateAndSendOTP = (email) => {
 
         const params = row
           ? [otp, expiresAt, email]
+        
           : [email, otp, expiresAt];
 
             db.run(query, params, async (runErr) => {
               if (runErr) {
                 return reject(runErr);
               }
-
               try {
                 await sendOTP(email, otp);
 

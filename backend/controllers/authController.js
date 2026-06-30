@@ -318,9 +318,48 @@ const verifyLogin = async (req, res) => {
   }
 
 };
+// Get all users (Debug)
+const getUsers = (req, res) => {
+  db.all("SELECT * FROM users", [], (err, rows) => {
+    if (err) {
+      console.error(err);
+
+      return res.status(500).json({
+        success: false,
+        message: "Database error occurred",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: rows,
+    });
+  });
+};
+
+// Get all OTPs (Debug)
+const getOtps = (req, res) => {
+  db.all("SELECT * FROM otp_codes", [], (err, rows) => {
+    if (err) {
+      console.error(err);
+
+      return res.status(500).json({
+        success: false,
+        message: "Database error occurred",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: rows,
+    });
+  });
+};
 module.exports = {
   register,
   verifyOtp,
   login,
   verifyLogin,
+  getUsers,
+  getOtps,
 };

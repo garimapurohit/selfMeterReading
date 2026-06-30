@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // Export an asynchronous function that sends an OTP email.
-// The function accepts the recipient email and the OTP value.
+// This... function accepts the recipient email and the OTP value.
 const sendOTP = async (email, otp) => {
   const mailOptions = {
     from: process.env.EMAIL_USER,
