@@ -12,16 +12,40 @@ const getOtpExpiry = () => {
   return new Date(Date.now() + 5 * 60 * 1000).toISOString();
 };
 
+// Remove any OTPs that have already expired
+const cleanupExpiredOtps = () => {
+  return new Promise((resolve, reject) => {
+    const now = new Date().toISOString();
+
+    db.run("DELETE FROM otp_codes WHERE expiresAt <= ?", [now], function (err) {
+      if (err) {
+        return reject(err);
+      }
+
+      resolve(this.changes);
+    });
+  });
+};
+
+// Periodically remove expired OTP rows in the background
+setInterval(() => {
+  cleanupExpiredOtps().catch((err) => {
+    console.error("Failed to cleanup expired OTPs:", err);
+  });
+}, 60 * 1000);
+
 // Generate, save/update and send OTP
 const generateAndSendOTP = (email) => {
   return new Promise((resolve, reject) => {
-    const otp = generateSecureOtp();
-    const expiresAt = getOtpExpiry();
+    cleanupExpiredOtps()
+      .then(() => {
+        const otp = generateSecureOtp();
+        const expiresAt = getOtpExpiry();
 
-    db.get(
-      "SELECT id FROM otp_codes WHERE email = ?",
-      [email],
-      (err, row) => {
+        db.get(
+          "SELECT id FROM otp_codes WHERE email = ?",
+          [email],
+          (err, row) => {
         if (err) {
           return reject(err);
         }
@@ -34,33 +58,36 @@ const generateAndSendOTP = (email) => {
           ? [otp, expiresAt, email]
           : [email, otp, expiresAt];
 
-        db.run(query, params, async (runErr) => {
-          if (runErr) {
-            return reject(runErr);
-          }
+            db.run(query, params, async (runErr) => {
+              if (runErr) {
+                return reject(runErr);
+              }
 
-          try {
-            await sendOTP(email, otp);
+              try {
+                await sendOTP(email, otp);
 
-            resolve({
-              email,
-              expiresAt,
+                resolve({
+                  email,
+                  expiresAt,
+                });
+              } catch (mailErr) {
+                reject(mailErr);
+              }
             });
-          } catch (mailErr) {
-            reject(mailErr);
           }
-        });
-      }
-    );
+        );
+      })
+      .catch(reject);
   });
 };
 const verifyOTP = (email, otp) => {
   return new Promise((resolve, reject) => {
-
-    db.get(
-      "SELECT * FROM otp_codes WHERE email = ?",
-      [email],
-      (err, row) => {
+    cleanupExpiredOtps()
+      .then(() => {
+        db.get(
+          "SELECT * FROM otp_codes WHERE email = ?",
+          [email],
+          (err, row) => {
 
         if (err) return reject(err);
 
@@ -72,32 +99,37 @@ const verifyOTP = (email, otp) => {
           return reject(new Error("OTP_ALREADY_USED"));
         }
 
-        const now = new Date();
-        const expiresAt = new Date(row.expiresAt);
+            const now = new Date();
+            const expiresAt = new Date(row.expiresAt);
 
-        if (isNaN(expiresAt.getTime()) || now > expiresAt) {
-          return reject(new Error("OTP_EXPIRED"));
-        }
+            if (isNaN(expiresAt.getTime()) || now > expiresAt) {
+              db.run("DELETE FROM otp_codes WHERE email = ?", [email], (deleteErr) => {
+                if (deleteErr) {
+                  return reject(deleteErr);
+                }
 
-        if (otp !== row.otp) {
-          return reject(new Error("INVALID_OTP"));
-        }
+                return reject(new Error("OTP_EXPIRED"));
+              });
+              return;
+            }
 
-        db.run(
-          "UPDATE otp_codes SET verified = 1 WHERE email = ?",
-          [email],
-          function (updateErr) {
+            if (otp !== row.otp) {
+              return reject(new Error("INVALID_OTP"));
+            }
 
-            if (updateErr) return reject(updateErr);
+            db.run(
+              "UPDATE otp_codes SET verified = 1 WHERE email = ?",
+              [email],
+              function (updateErr) {
+                if (updateErr) return reject(updateErr);
 
-            resolve(true);
-
+                resolve(true);
+              }
+            );
           }
         );
-
-      }
-    );
-
+      })
+      .catch(reject);
   });
 };
 
