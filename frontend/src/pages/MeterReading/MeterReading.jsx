@@ -13,7 +13,7 @@ const FormInitial = {
   kvh: "",
   meterImage: null,
 };
-// At starting ther won't be error it will be visble,,, after userr clickss the save button
+// At starting there won't be error it will be visble,,, after userr clickss the save button
 
 const ErrorsInitial = {
   caNumber: "",

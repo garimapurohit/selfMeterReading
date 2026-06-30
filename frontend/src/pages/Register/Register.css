@@ -1,0 +1,282 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---- Page Shell ---- */
+.register-page {
+  min-height: 100vh;
+  width: 100%;
+  background-color: #f5f7fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  font-family: "Segoe UI", "Inter", Arial, sans-serif;
+  color: #16213e;
+}
+
+/* ---- Card ---- */
+.register-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 450px;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(11, 78, 162, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation: cardEnter 0.35s ease;
+}
+
+@keyframes cardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Brand Header ---- */
+.register-card__brand {
+  text-align: center;
+  border-bottom: 1px solid #e7ecf3;
+  padding-bottom: 18px;
+}
+
+.register-card__company {
+  font-size: 17px;
+  font-weight: 700;
+  color: #0b4ea2;
+  line-height: 1.35;
+  letter-spacing: 0.2px;
+}
+
+.register-card__portal-name {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #6b7a99;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-top: 6px;
+}
+
+/* ---- Title Section ---- */
+.register-card__intro {
+  text-align: center;
+}
+
+.register-card__title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #16213e;
+  margin-bottom: 8px;
+}
+
+.register-card__subtitle {
+  font-size: 13.5px;
+  color: #6b7a99;
+  line-height: 1.5;
+}
+
+/* ---- Form ---- */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.register-form__group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.register-form__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2d3b5e;
+  letter-spacing: 0.2px;
+}
+
+/* ---- Inputs ---- */
+.register-form__input {
+  height: 46px;
+  padding: 0 16px;
+  border: 1.5px solid #d6dee9;
+  border-radius: 10px;
+  font-size: 14.5px;
+  color: #16213e;
+  background: #fafbfd;
+  outline: none;
+  width: 100%;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.register-form__input::placeholder {
+  color: #9aa6c0;
+}
+
+.register-form__input:hover {
+  border-color: #a9bedd;
+}
+
+.register-form__input:focus {
+  border-color: #0b4ea2;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(11, 78, 162, 0.12);
+}
+
+.register-form__input:disabled {
+  background: #f0f3f8;
+  color: #8d99b8;
+  cursor: not-allowed;
+}
+
+.register-form__input--error {
+  border-color: #c0392b;
+  background: #fff8f7;
+}
+
+.register-form__input--error:focus {
+  border-color: #c0392b;
+  box-shadow: 0 0 0 4px rgba(192, 57, 43, 0.10);
+}
+
+/* ---- Error Message ---- */
+.register-form__error {
+  font-size: 12px;
+  color: #c0392b;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.register-form__error::before {
+  content: "⚠";
+  font-size: 11px;
+}
+
+/* ---- Buttons ---- */
+.register-form__btn {
+  height: 48px;
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  background-color: #0b4ea2;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: background-color 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
+  box-shadow: 0 4px 14px rgba(11, 78, 162, 0.28);
+  margin-top: 4px;
+}
+
+.register-form__btn:hover {
+  background-color: #083a7a;
+  transform: scale(1.015);
+  box-shadow: 0 6px 18px rgba(8, 58, 122, 0.32);
+}
+
+.register-form__btn:active {
+  transform: scale(0.985);
+}
+
+.register-form__btn:focus-visible {
+  box-shadow: 0 0 0 4px rgba(11, 78, 162, 0.25);
+}
+
+/* ---- OTP Section ---- */
+/* Slides + fades in when revealed via conditional rendering */
+.otp-section {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-top: 18px;
+  border-top: 1px dashed #d6dee9;
+  animation: otpSlideIn 0.35s ease;
+}
+
+@keyframes otpSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Footer Link ---- */
+.register-card__footer-text {
+  text-align: center;
+  font-size: 13.5px;
+  color: #6b7a99;
+}
+
+.register-card__login-link {
+  color: #0b4ea2;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.register-card__login-link:hover {
+  color: #083a7a;
+  text-decoration: underline;
+}
+
+/* ============================================================
+   Responsive Design
+   ============================================================ */
+
+/* Tablet */
+@media (max-width: 768px) {
+  .register-card {
+    max-width: 90%;
+    padding: 32px 26px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .register-page {
+    padding: 20px 12px;
+  }
+
+  .register-card {
+    max-width: 100%;
+    padding: 28px 20px;
+    border-radius: 12px;
+    gap: 20px;
+  }
+
+  .register-card__company {
+    font-size: 15.5px;
+  }
+
+  .register-card__title {
+    font-size: 19px;
+  }
+
+  .register-form__input {
+    height: 44px;
+    font-size: 14px;
+  }
+
+  .register-form__btn {
+    height: 46px;
+    font-size: 14.5px;
+  }
+}
