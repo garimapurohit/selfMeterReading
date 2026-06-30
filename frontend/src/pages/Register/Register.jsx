@@ -1,46 +1,60 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Register.css";
+import api from "../../services/api";
 
-//  Register Page 
-// Account Registration
 const Register = () => {
-  //  Form state ─
+  // Form state
   const [caNumber, setCaNumber] = useState("");
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
 
-  //  UI state ─
+  // UI state
   const [otpSent, setOtpSent] = useState(false);
   const [errors, setErrors] = useState({});
+
+  const navigate = useNavigate();
 
   // CA Number — digits only
   const handleCaNumberChange = (e) => {
     const value = e.target.value;
-    // Strip any non-numeric characters as the user types
+
     if (/^\d*$/.test(value)) {
       setCaNumber(value);
-      setErrors((prev) => ({ ...prev, caNumber: "" }));
+      setErrors((prev) => ({
+        ...prev,
+        caNumber: "",
+      }));
     }
   };
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
-    setErrors((prev) => ({ ...prev, email: "" }));
+
+    setErrors((prev) => ({
+      ...prev,
+      email: "",
+    }));
   };
 
-  // OTP — digits only, max 6
+  // OTP
   const handleOtpChange = (e) => {
     const value = e.target.value;
+
     if (/^\d{0,6}$/.test(value)) {
       setOtp(value);
-      setErrors((prev) => ({ ...prev, otp: "" }));
+
+      setErrors((prev) => ({
+        ...prev,
+        otp: "",
+      }));
     }
   };
 
-  // Validate CA Number + Email, then reveal OTP section
-  const handleSendOtp = (e) => {
+  // Send OTP
+  const handleSendOtp = async (e) => {
     e.preventDefault();
+
     const newErrors = {};
 
     if (!caNumber.trim()) {
@@ -55,66 +69,110 @@ const Register = () => {
 
     setErrors(newErrors);
 
-    // Stop here if validation fails
     if (Object.keys(newErrors).length > 0) return;
 
-    // No backend yet — just reveal the OTP section
-    setOtpSent(true);
+    try {
+      const response = await api.post("/auth/register", {
+        caNumber,
+        email,
+      });
+
+      alert(response.data.message);
+
+      setOtpSent(true);
+
+    } catch (err) {
+      alert(
+        err.response?.data?.message ||
+          "Failed to send OTP."
+      );
+    }
   };
 
-  // Validate OTP on Verify click
-  const handleVerifyOtp = (e) => {
+  // Verify OTP
+  const handleVerifyOtp = async (e) => {
     e.preventDefault();
 
     if (!otp.trim()) {
-      setErrors((prev) => ({ ...prev, otp: "OTP is required." }));
+      setErrors((prev) => ({
+        ...prev,
+        otp: "OTP is required.",
+      }));
       return;
     }
 
     if (otp.length !== 6) {
-      setErrors((prev) => ({ ...prev, otp: "OTP must be 6 digits." }));
+      setErrors((prev) => ({
+        ...prev,
+        otp: "OTP must be 6 digits.",
+      }));
       return;
     }
 
-    // Placeholder  backend verification will go here later...
-    console.log("Verifying OTP:", otp);
+    try {
+      const response = await api.post("/auth/verify-otp", {
+        caNumber,
+        email,
+        otp,
+      });
+
+      alert(response.data.message);
+
+      navigate("/");
+
+    } catch (err) {
+      alert(
+        err.response?.data?.message ||
+          "OTP Verification Failed."
+      );
+    }
   };
 
   return (
     <div className="register-page">
       <div className="register-card">
 
-        {/*  Brand Header  */}
+        {/* Brand Header */}
         <div className="register-card__brand">
           <p className="register-card__portal-name">
             Self Meter Reading Portal
           </p>
         </div>
 
-        {/*  Title Section ─ */}
+        {/* Title */}
         <div className="register-card__intro">
-          <h2 className="register-card__title">Create Your Account</h2>
+          <h2 className="register-card__title">
+            Create Your Account
+          </h2>
+
           <p className="register-card__subtitle">
             Register to submit your monthly electricity meter reading.
           </p>
         </div>
 
-        {/*  Registration Form ─ */}
-        <form className="register-form" onSubmit={handleSendOtp} noValidate>
-
+        {/* Registration Form */}
+        <form
+          className="register-form"
+          onSubmit={handleSendOtp}
+          noValidate
+        >
           {/* CA Number */}
           <div className="register-form__group">
-            <label className="register-form__label" htmlFor="caNumber">
+            <label
+              className="register-form__label"
+              htmlFor="caNumber"
+            >
               CA Number
             </label>
 
             <input
               className={`register-form__input ${
-                errors.caNumber ? "register-form__input--error" : ""
+                errors.caNumber
+                  ? "register-form__input--error"
+                  : ""
               }`}
               type="text"
               id="caNumber"
-              inputMode="numeric"
               placeholder="Enter CA Number"
               value={caNumber}
               onChange={handleCaNumberChange}
@@ -128,15 +186,20 @@ const Register = () => {
             )}
           </div>
 
-          {/* Email Address */}
+          {/* Email */}
           <div className="register-form__group">
-            <label className="register-form__label" htmlFor="email">
+            <label
+              className="register-form__label"
+              htmlFor="email"
+            >
               Email Address
             </label>
 
             <input
               className={`register-form__input ${
-                errors.email ? "register-form__input--error" : ""
+                errors.email
+                  ? "register-form__input--error"
+                  : ""
               }`}
               type="email"
               id="email"
@@ -153,16 +216,17 @@ const Register = () => {
             )}
           </div>
 
-          {/* Send OTP button — hidden once OTP section is shown */}
           {!otpSent && (
-            <button type="submit" className="register-form__btn">
+            <button
+              type="submit"
+              className="register-form__btn"
+            >
               Send OTP
             </button>
           )}
         </form>
 
-        {/*  OTP Section ─ */}
-        {/* Conditionally rendered with a slide/fade animation */}
+        {/* OTP Section */}
         {otpSent && (
           <form
             className="otp-section"
@@ -170,17 +234,21 @@ const Register = () => {
             noValidate
           >
             <div className="register-form__group">
-              <label className="register-form__label" htmlFor="otp">
+              <label
+                className="register-form__label"
+                htmlFor="otp"
+              >
                 OTP Verification
               </label>
 
               <input
                 className={`register-form__input ${
-                  errors.otp ? "register-form__input--error" : ""
+                  errors.otp
+                    ? "register-form__input--error"
+                    : ""
                 }`}
                 type="text"
                 id="otp"
-                inputMode="numeric"
                 placeholder="Enter OTP"
                 value={otp}
                 onChange={handleOtpChange}
@@ -195,13 +263,16 @@ const Register = () => {
               )}
             </div>
 
-            <button type="submit" className="register-form__btn">
+            <button
+              type="submit"
+              className="register-form__btn"
+            >
               Verify OTP
             </button>
           </form>
         )}
 
-        {/*  Footer Link ─ */}
+        {/* Footer */}
         <p className="register-card__footer-text">
           Already have an account?{" "}
           <Link

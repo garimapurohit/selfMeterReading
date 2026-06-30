@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
+import api from "../../services/api";
 
 // Login Page
 // Self Meter Reading Portal — Account Login
+
 const Login = () => {
   // Form state
   const [email, setEmail] = useState("");
@@ -13,24 +15,33 @@ const Login = () => {
   const [otpSent, setOtpSent] = useState(false);
   const [errors, setErrors] = useState({});
 
-  // Handlers
+  const navigate = useNavigate();
 
+  // Email
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
-    setErrors((prev) => ({ ...prev, email: "" }));
+    setErrors((prev) => ({
+      ...prev,
+      email: "",
+    }));
   };
 
-  // OTP — digits only, max 6
+  // OTP
   const handleOtpChange = (e) => {
     const value = e.target.value;
+
     if (/^\d{0,6}$/.test(value)) {
       setOtp(value);
-      setErrors((prev) => ({ ...prev, otp: "" }));
+
+      setErrors((prev) => ({
+        ...prev,
+        otp: "",
+      }));
     }
   };
 
-  // Validate Email, then reveal OTP section
-  const handleSendOtp = (e) => {
+  // Send OTP
+  const handleSendOtp = async (e) => {
     e.preventDefault();
 
     const newErrors = {};
@@ -45,27 +56,62 @@ const Login = () => {
 
     if (Object.keys(newErrors).length > 0) return;
 
-    // Temporary until backend integration
-    setOtpSent(true);
+    try {
+      const response = await api.post("/auth/login", {
+        email,
+      });
+
+      alert(response.data.message);
+
+      setOtpSent(true);
+
+    } catch (err) {
+      alert(
+        err.response?.data?.message ||
+        "Failed to send OTP."
+      );
+    }
   };
 
-  // Validate OTP
-  const handleLogin = (e) => {
+  // Verify Login
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     if (!otp.trim()) {
-      setErrors((prev) => ({ ...prev, otp: "OTP is required." }));
+      setErrors((prev) => ({
+        ...prev,
+        otp: "OTP is required.",
+      }));
       return;
     }
 
     if (otp.length !== 6) {
-      setErrors((prev) => ({ ...prev, otp: "OTP must be 6 digits." }));
+      setErrors((prev) => ({
+        ...prev,
+        otp: "OTP must be 6 digits.",
+      }));
       return;
     }
 
-    console.log("Logging in with OTP:", otp);
+    try {
+      const response = await api.post("/auth/verify-login", {
+        email,
+        otp,
+      });
 
-    // Backend integration will be added later
+      alert(response.data.message);
+
+      console.log("Logged in User:", response.data.data);
+
+      // Navigate to Meter Reading page
+      navigate("/reading");
+
+    } catch (err) {
+      alert(
+        err.response?.data?.message ||
+        "Login Failed."
+      );
+    }
   };
 
   return (
@@ -81,23 +127,34 @@ const Login = () => {
 
         {/* Title */}
         <div className="login-card__intro">
-          <h2 className="login-card__title">Login</h2>
+          <h2 className="login-card__title">
+            Login
+          </h2>
+
           <p className="login-card__subtitle">
             Login to submit your monthly electricity meter reading.
           </p>
         </div>
 
         {/* Login Form */}
-        <form className="login-form" onSubmit={handleSendOtp} noValidate>
-
+        <form
+          className="login-form"
+          onSubmit={handleSendOtp}
+          noValidate
+        >
           <div className="login-form__group">
-            <label className="login-form__label" htmlFor="email">
+            <label
+              className="login-form__label"
+              htmlFor="email"
+            >
               Email Address
             </label>
 
             <input
               className={`login-form__input ${
-                errors.email ? "login-form__input--error" : ""
+                errors.email
+                  ? "login-form__input--error"
+                  : ""
               }`}
               type="email"
               id="email"
@@ -108,12 +165,17 @@ const Login = () => {
             />
 
             {errors.email && (
-              <span className="login-form__error">{errors.email}</span>
+              <span className="login-form__error">
+                {errors.email}
+              </span>
             )}
           </div>
 
           {!otpSent && (
-            <button type="submit" className="login-form__btn">
+            <button
+              type="submit"
+              className="login-form__btn"
+            >
               Send OTP
             </button>
           )}
@@ -121,20 +183,27 @@ const Login = () => {
 
         {/* OTP Section */}
         {otpSent && (
-          <form className="otp-section" onSubmit={handleLogin} noValidate>
-
+          <form
+            className="otp-section"
+            onSubmit={handleLogin}
+            noValidate
+          >
             <div className="login-form__group">
-              <label className="login-form__label" htmlFor="otp">
+              <label
+                className="login-form__label"
+                htmlFor="otp"
+              >
                 OTP Verification
               </label>
 
               <input
                 className={`login-form__input ${
-                  errors.otp ? "login-form__input--error" : ""
+                  errors.otp
+                    ? "login-form__input--error"
+                    : ""
                 }`}
                 type="text"
                 id="otp"
-                inputMode="numeric"
                 placeholder="Enter OTP"
                 value={otp}
                 onChange={handleOtpChange}
@@ -143,11 +212,16 @@ const Login = () => {
               />
 
               {errors.otp && (
-                <span className="login-form__error">{errors.otp}</span>
+                <span className="login-form__error">
+                  {errors.otp}
+                </span>
               )}
             </div>
 
-            <button type="submit" className="login-form__btn">
+            <button
+              type="submit"
+              className="login-form__btn"
+            >
               Login
             </button>
           </form>
