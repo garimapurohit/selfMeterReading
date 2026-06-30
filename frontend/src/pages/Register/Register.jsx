@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./Register.css";
 
 //  Register Page 
@@ -69,6 +70,7 @@ const Register = () => {
       setErrors((prev) => ({ ...prev, otp: "OTP is required." }));
       return;
     }
+
     if (otp.length !== 6) {
       setErrors((prev) => ({ ...prev, otp: "OTP must be 6 digits." }));
       return;
@@ -105,6 +107,7 @@ const Register = () => {
             <label className="register-form__label" htmlFor="caNumber">
               CA Number
             </label>
+
             <input
               className={`register-form__input ${
                 errors.caNumber ? "register-form__input--error" : ""
@@ -117,8 +120,11 @@ const Register = () => {
               onChange={handleCaNumberChange}
               disabled={otpSent}
             />
+
             {errors.caNumber && (
-              <span className="register-form__error">{errors.caNumber}</span>
+              <span className="register-form__error">
+                {errors.caNumber}
+              </span>
             )}
           </div>
 
@@ -127,6 +133,7 @@ const Register = () => {
             <label className="register-form__label" htmlFor="email">
               Email Address
             </label>
+
             <input
               className={`register-form__input ${
                 errors.email ? "register-form__input--error" : ""
@@ -138,8 +145,11 @@ const Register = () => {
               onChange={handleEmailChange}
               disabled={otpSent}
             />
+
             {errors.email && (
-              <span className="register-form__error">{errors.email}</span>
+              <span className="register-form__error">
+                {errors.email}
+              </span>
             )}
           </div>
 
@@ -163,6 +173,7 @@ const Register = () => {
               <label className="register-form__label" htmlFor="otp">
                 OTP Verification
               </label>
+
               <input
                 className={`register-form__input ${
                   errors.otp ? "register-form__input--error" : ""
@@ -176,8 +187,11 @@ const Register = () => {
                 maxLength={6}
                 autoFocus
               />
+
               {errors.otp && (
-                <span className="register-form__error">{errors.otp}</span>
+                <span className="register-form__error">
+                  {errors.otp}
+                </span>
               )}
             </div>
 
@@ -190,7 +204,12 @@ const Register = () => {
         {/*  Footer Link ─ */}
         <p className="register-card__footer-text">
           Already have an account?{" "}
-          <span className="register-card__login-link">Login</span>
+          <Link
+            to="/"
+            className="register-card__login-link"
+          >
+            Login
+          </Link>
         </p>
 
       </div>

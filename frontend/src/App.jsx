@@ -1,23 +1,17 @@
-// import MeterReading from "./pages/MeterReading/MeterReading";
-// function App() {
-//   return <MeterReading />;
-// }
-
-// export default App;
-
-
-// import Register from "./pages/Register/Register";
-
-// function App() {
-//   return <Register />;
-// }
-
-// export default App;
+import { Routes, Route } from "react-router-dom";
 
 import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
+import MeterReading from "./pages/MeterReading/MeterReading";
 
 function App() {
-  return <Login />;
+  return (
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/reading" element={<MeterReading />} />
+    </Routes>
+  );
 }
 
 export default App;
