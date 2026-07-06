@@ -1,46 +1,69 @@
 const db = require("../db/db");
-// to create a new reading
-const createReading = (req, res) => {
-  console.log("BODY:", req.body);
-  console.log("FILE:", req.file);
+const { uploadImage } = require("../services/cloudinaryService");
 
-  const {
-    caNumber,
-    meterNumber,
-    readingDate,
-    kwh,
-    kvh,
-  } = req.body;
+// Create a new meter reading
+const createReading = async (req, res) => {
+  try {
+    console.log("BODY:", req.body);
+    console.log("FILE:", req.file);
 
-  const imageName = req.file.filename;
-
-  db.run(
-    `INSERT INTO meter_readings
-     (caNumber, meterNumber, readingDate, kwh, kvh, imageName)
-     VALUES (?, ?, ?, ?, ?, ?)`,
-    [
+    const {
       caNumber,
       meterNumber,
       readingDate,
       kwh,
       kvh,
-      imageName,
-    ],
-    function (err) {
-      if (err) {
-        return res.status(500).json({
-          success: false,
-          message: "Failed to save reading",
-        });
-      }
+    } = req.body;
 
-      res.status(201).json({
-        success: true,
-        message: "Reading saved successfully",
-        registerId: this.lastID,
+    // Check if image is uploaded
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "Meter image is required",
       });
     }
-  );
+
+    // Upload image to Cloudinary
+    const imageName = await uploadImage(req.file.buffer);
+
+    // Save reading in database
+    db.run(
+      `INSERT INTO meter_readings
+      (caNumber, meterNumber, readingDate, kwh, kvh, imageName)
+      VALUES (?, ?, ?, ?, ?, ?)`,
+      [
+        caNumber,
+        meterNumber,
+        readingDate,
+        kwh,
+        kvh,
+        imageName,
+      ],
+      function (err) {
+        if (err) {
+          console.error(err);
+
+          return res.status(500).json({
+            success: false,
+            message: "Failed to save reading",
+          });
+        }
+
+        return res.status(201).json({
+          success: true,
+          message: "Reading saved successfully",
+          registerId: this.lastID,
+        });
+      }
+    );
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to save reading",
+    });
+  }
 };
 // to get all readings in the database 
 const getAllReadings = (req, res) => {

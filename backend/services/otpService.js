@@ -21,7 +21,6 @@ const cleanupExpiredOtps = () => {
       if (err) {
         return reject(err);
       }
-
       resolve(this.changes);
     });
   });

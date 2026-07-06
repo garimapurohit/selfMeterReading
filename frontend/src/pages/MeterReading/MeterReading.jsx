@@ -147,51 +147,52 @@ const MeterReading = () => {
     reader.readAsDataURL(file);
   };
 
-  const handleSave = async (e) => {
-    e.preventDefault();
+const handleSave = async (e) => {
+  e.preventDefault();
 
-    const errs = validate(form);
-    setErrors(errs);
+  const errs = validate(form);
+  setErrors(errs);
 
-    const hasErrors = Object.values(errs).some(
-      (msg) => msg !== ""
+  const hasErrors = Object.values(errs).some(
+    (msg) => msg !== ""
+  );
+
+  if (hasErrors) return;
+
+  // Create FormData object
+  const formData = new FormData();
+
+  formData.append("caNumber", form.caNumber);
+  formData.append("meterNumber", form.meterNumber);
+  formData.append("readingDate", form.readingDate);
+  formData.append("kwh", form.kwh);
+  formData.append("kvh", form.kvh);
+  formData.append("meterImage", form.meterImage);
+
+  try {
+    const response = await fetch(
+      "http://localhost:5000/api/readings",
+      {
+        method: "POST",
+        body: formData,
+      }
     );
 
-    if (hasErrors) return;
+    const data = await response.json();
 
-    try {
-      const response = await fetch(
-        "http://localhost:5000/api/readings",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            caNumber: form.caNumber,
-            meterNumber: form.meterNumber,
-            readingDate: form.readingDate,
-            kwh: Number(form.kwh),
-            kvh: Number(form.kvh),
-          }),
-        }
-      );
+    console.log("API Response:", data);
 
-      const data = await response.json();
+    if (data.success) {
+      alert("Reading Saved Successfully!");
 
-      console.log("API Response:", data);
-
-      if (data.success) {
-        alert("Reading Saved Successfully!");
-
-        handleClear();
-      }
-    } catch (error) {
-      console.error("Error:", error);
+      handleClear();
+    } else {
+      alert(data.message);
     }
-  };
-
-  const handleClear = () => {
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};  const handleClear = () => {
     setForm(FormInitial);
     setErrors(ErrorsInitial);
     setImagePreview(null);
