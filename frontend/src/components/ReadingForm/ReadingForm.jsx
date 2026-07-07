@@ -22,9 +22,10 @@ const ReadingForm = ({
   return (
     <div className="rform__card">
       <div className="rform__card-header">
-        <h2 className="rform__card-title">Submit Meter Reading</h2>
+        <h2 className="rform__card-title">User's Meter Reading Form</h2>
         <p className="rform__card-subtitle">
-          All fields are mandatory. Reading date must be within the last 2 days.
+          All fields are mandatory. Reading date must be within the last 2 days. 
+          Enter the same CA number Used For registration.
         </p>
       </div>
 
@@ -117,7 +118,7 @@ const ReadingForm = ({
 
           <div className="rform__field">
             <label className="rform__label" htmlFor="kvh">
-              KVH <span className="rform__required">*</span>
+              kVAh <span className="rform__required">*</span>
             </label>
             <div className="rform__unit-wrap">
               <input
