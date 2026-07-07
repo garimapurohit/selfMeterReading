@@ -44,7 +44,7 @@ const ReadingForm = ({
               value={form.caNumber}
               onChange={onChange}
               placeholder="e.g. 1234567890"
-              autoComplete="off"
+              autoComplete="on"
             />
             {errors.caNumber && (
               <span className="rform__error" role="alert">{errors.caNumber}</span>
