@@ -15,9 +15,9 @@ CREATE TABLE IF NOT EXISTS meter_readings (
 )
 `, (err) => {
     if (err) {
-        console.error("TABLE ERROR:", err);
+        console.error("Error MeterReading tablee:", err);
     } else {
-        console.log("meter_readings table ready");
+        console.log("meter Reading table.. working");
     }
 });
 
@@ -31,9 +31,9 @@ CREATE TABLE IF NOT EXISTS users (
 )
 `, (err) => {
     if (err) {
-        console.error("TABLE ERROR:", err);
+        console.error("error user table:", err);
     } else {
-        console.log("users table ready");
+        console.log("users table working");
     }
 });
 
@@ -48,8 +48,8 @@ CREATE TABLE IF NOT EXISTS otp_codes (
 )
 `, (err) => {
     if (err) {
-        console.error("TABLE ERROR:", err);
+        console.error("error otpcodes table:", err);
     } else {
-        console.log("otp_codes table ready");
+        console.log("otpcodes table workinggg");
     }
 });
