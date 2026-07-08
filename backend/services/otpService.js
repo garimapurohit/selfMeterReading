@@ -1,8 +1,10 @@
-const crypto = require("crypto");
+const crypto = require("crypto"); // we used this becoz it is safer than the math.random() as it doesn't generate predictable number.. 
 const db = require("../db/db");
 const { sendOTP } = require("./mailService");
 
-// Generate a secure 6-digit OTP
+// we have functions here generateSecureOtp , getOtpExpiry, cleanupExpiredOtps, generateAndSendOTP, verifyOTP 
+
+// this function is used to generate a 6 digi otp 
 const generateSecureOtp = () => {
   return crypto.randomInt(0, 1000000).toString().padStart(6, "0");
 };

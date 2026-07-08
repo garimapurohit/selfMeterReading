@@ -21,8 +21,8 @@ const sendOTP = async (email, otp) => {
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: email,
-    subject: "Your OTP for Self Meter Reading",
-    text: `Your One-Time Password (OTP) is ${otp}. It expires in 5 minutes. Please use it before the expiry time.`,
+    subject: " OTP for Self Meter Reading",
+    text: `Your One-Time Password (OTP) for selfMeterReading is ${otp}. It expires in 5 minutes. Please use it before the expiry time.`,
   };
 
   return transporter.sendMail(mailOptions);

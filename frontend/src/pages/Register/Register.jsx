@@ -15,7 +15,7 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  // CA Number — digits only
+  // CA Number it will accept..digits only
   const handleCaNumberChange = (e) => {
     const value = e.target.value;
 
