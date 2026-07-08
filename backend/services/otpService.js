@@ -7,12 +7,12 @@ const generateSecureOtp = () => {
   return crypto.randomInt(0, 1000000).toString().padStart(6, "0");
 };
 
-// Generate OTP expiry time (5 minutes)
+// done so that otp expires after 5 minsss
 const getOtpExpiry = () => {
   return new Date(Date.now() + 5 * 60 * 1000).toISOString();
 };
 
-// Remove any OTPs that have already expired
+// it removes the otp that are expired...from the db...
 const cleanupExpiredOtps = () => {
   return new Promise((resolve, reject) => {
     const now = new Date().toISOString();

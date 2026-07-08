@@ -34,9 +34,9 @@ const ImageUpload = ({ file, preview, error, onChange }) => {
           </div>
         ) : (
           <div className="imgUploadPlaceholder">
-            <span className="imgUploadIcon" aria-hidden="true">📷</span>
-            <span className="imgUploadHint">Click to upload or drag &amp; drop</span>
-            <span className="imgUploadFormats">JPG, JPEG, PNG only</span>
+            <span className="imgUploadIcon" aria-hidden="true"></span>
+            <span className="imgUploadHint">Upload Imagehere  &amp; drop</span>
+            <span className="imgUploadFormats">Max size 5MB for img</span>
           </div>
         )}
       </div>

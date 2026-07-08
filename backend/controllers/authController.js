@@ -2,14 +2,14 @@ const db = require("../db/db");
 const {generateAndSendOTP, verifyOTP,} = require("../services/otpService");
 
 const {createUser,findUserByEmail,} = require("../services/authService");
-// Email validation regex
+// we check for the email formattt 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 //  REGISTER 
 const register = async (req, res) => {
   const { caNumber, email } = req.body;
 
-  // Validate CA Number
+  //  CA Number validaationn 
   if (!caNumber || caNumber.trim() === "") {
     return res.status(400).json({
       success: false,
@@ -21,7 +21,7 @@ const register = async (req, res) => {
   if (!email || email.trim() === "") {
     return res.status(400).json({
       success: false,
-      message: "Email is required",
+      message: "Email is required field..",
     });
   }
 
@@ -42,14 +42,14 @@ const register = async (req, res) => {
 
         return res.status(500).json({
           success: false,
-          message: "Database error occurred",
+          message: "Error in database",
         });
       }
 
       if (row) {
         return res.status(409).json({
           success: false,
-          message: "CA Number already registered",
+          message: "caNumber already registered..",
         });
       }
 
@@ -57,16 +57,7 @@ const register = async (req, res) => {
       db.get(
         "SELECT userId FROM users WHERE email = ?",
         [email],
-        async (err, row) => {
-          if (err) {
-            console.error(err);
-
-            return res.status(500).json({
-              success: false,
-              message: "Database error occurred",
-            });
-          }
-
+        async ( row) => {
           if (row) {
             return res.status(409).json({
               success: false,
@@ -184,7 +175,7 @@ const verifyOtp = async (req, res) => {
 
         return res.status(500).json({
           success: false,
-          message: "Database error occurred",
+          message: "Error in database",
         });
     }
   }
@@ -237,7 +228,7 @@ const login = async (req, res) => {
 
     return res.status(500).json({
       success: false,
-      message: "Database error occurred",
+      message: "Error in database",
     });
 
   }
@@ -310,7 +301,7 @@ const verifyLogin = async (req, res) => {
 
         return res.status(500).json({
           success: false,
-          message: "Database error occurred",
+          message: "Error in database",
         });
 
     }
@@ -326,7 +317,7 @@ const getUsers = (req, res) => {
 
       return res.status(500).json({
         success: false,
-        message: "Database error occurred",
+        message: "Error in database",
       });
     }
 
@@ -345,7 +336,7 @@ const getOtps = (req, res) => {
 
       return res.status(500).json({
         success: false,
-        message: "Database error occurred",
+        message: "Error in database",
       });
     }
 
