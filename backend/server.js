@@ -24,10 +24,11 @@ app.use((req, res, next) => {
 
 const path = require("path");
 
-app.use(
-  "/uploads",
-  express.static(path.join(__dirname, "uploads"))
-);
+// becoz abh we using cloudinary for img uploads 
+// app.use(
+//   "/uploads",
+//   express.static(path.join(__dirname, "uploads"))
+// );
 app.use("/api/readings", readingRoutes);
 app.use("/api/auth", authRoutes);
 

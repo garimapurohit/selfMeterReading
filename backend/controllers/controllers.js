@@ -112,10 +112,10 @@ const getReadingsById = (req, res) => {
   );
 };
 const getReadingsByCaNumber = (req, res) => {
-  db.get(
+  db.all(
     "SELECT * FROM meter_readings WHERE caNumber = ?",
     [req.params.caNumber],
-    (err, row) => {
+    (err, rows) => {
       if (err) {
         return res.status(500).json({
           success: false,
@@ -123,7 +123,7 @@ const getReadingsByCaNumber = (req, res) => {
         });
       }
 
-      if (!row) {
+      if (!rows) {
         return res.status(404).json({
           success: false,
           message: "Reading not found",
@@ -132,7 +132,7 @@ const getReadingsByCaNumber = (req, res) => {
 
       res.status(200).json({
         success: true,
-        data: row,
+        data: rows,
       });
     }
   );

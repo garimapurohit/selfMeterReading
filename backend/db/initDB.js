@@ -1,6 +1,6 @@
 const db = require("./db");
 
-console.log("initDB file executed");
+console.log("for debugging ... initDB.js file running.");
 db.run("PRAGMA foreign_keys = ON;");
 
 // db.run("DROP TABLE IF EXISTS meter_readings;");
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS meter_readings (
     kwh REAL NOT NULL,
     kvh REAL NOT NULL,
     imageName TEXT,
-    createdAt DATETIME DEFAULT CURRENT_TIMEnpmSTAMP,
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (caNumber) REFERENCES users (caNumber) ON DELETE CASCADE
 )
 `, (err) => {
