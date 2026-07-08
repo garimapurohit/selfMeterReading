@@ -27,7 +27,7 @@ const Register = () => {
       }));
     }
   };
-
+// it handles the email change and clears ay error related to the email
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
 
