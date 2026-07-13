@@ -28,7 +28,7 @@ const cleanupExpiredOtps = () => {
   });
 };
 
-// Periodically remove expired OTP rows in the background
+// this functions runs every after every minutes  to clean the expired otp from otp_code table..... 
 setInterval(() => {
   cleanupExpiredOtps().catch((err) => {
     console.error("Failed to cleanup expired OTPs:", err);
@@ -51,6 +51,8 @@ const generateAndSendOTP = (email) => {
           return reject(err);
         }
 
+        // it checks that otp has gen for this mail if yes... then it just updates the otp with new otp and expirt time.. 
+        // else new row insert ,,,, 
         const query = row
           ? "UPDATE otp_codes SET otp = ?, expiresAt = ?, verified = 0 WHERE email = ?"
           : "INSERT INTO otp_codes (email, otp, expiresAt, verified) VALUES (?, ?, ?, 0)";

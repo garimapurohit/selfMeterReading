@@ -44,7 +44,7 @@ const ImageUpload = ({ file, preview, error, onChange }) => {
       {error && (
         <span className="imgUploadError" role="alert">
           {error}
-        </span>
+        </span> 
       )}
     </div>
   );

@@ -42,7 +42,7 @@ const register = async (req, res) => {
 
         return res.status(500).json({
           success: false,
-          message: "Error in database",
+          message: "there is an error in database,.",
         });
       }
 
@@ -59,9 +59,9 @@ const register = async (req, res) => {
         [email],
         async ( row) => {
           if (row) {
-            return res.status(409).json({
+            return res.status(400).json({
               success: false,
-              message: "Email already registered",
+              message: "This email is already registerd... please login",
             });
           }
 
