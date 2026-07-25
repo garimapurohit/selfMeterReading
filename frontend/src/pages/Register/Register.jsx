@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Register.css";
+import TataPowerLogo from "../../assets/TataPowerLogo.png";
 import api from "../../services/api";
 
 const Register = () => {
@@ -134,9 +135,8 @@ const Register = () => {
 
         {/* Brand Header */}
         <div className="register-card__brand">
-          <p className="register-card__portal-name">
-            Self Meter Reading Portal
-          </p>
+          <img src={TataPowerLogo} alt="Tata Power" className="register-card__logo" />
+          <h3>Self Meter Reading</h3>
         </div>
 
         {/* Title */}
@@ -221,7 +221,7 @@ const Register = () => {
               type="submit"
               className="register-form__btn"
             >
-              Send OTP
+              Send OTP →
             </button>
           )}
         </form>
@@ -267,24 +267,28 @@ const Register = () => {
               type="submit"
               className="register-form__btn"
             >
-              Verify OTP
+              Verify OTP →
             </button>
           </form>
         )}
+
+        <div className="register-divider">
+          <span>Secure Authentication</span>
+        </div>
 
         {/* Footer */}
         <p className="register-card__footer-text">
           Already have an account?{" "}
           <Link
-            to="/"
+            to="/Login"
             className="register-card__login-link"
           >
             Login
           </Link>
         </p>
 
+        </div>
       </div>
-    </div>
   );
 };
 

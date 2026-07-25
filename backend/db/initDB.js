@@ -7,10 +7,10 @@ db.run("PRAGMA foreign_keys = ON;");
 // db.run("DROP TABLE IF EXISTS users;");
 // db.run("DROP TABLE IF EXISTS otp_codes;");
 
-
 // here we create tables using db object from db.js file. we are using sqlite3 database. we are creating 3 tables: otp_codes, users, meter_readings
 db.run(`
-CREATE TABLE IF NOT EXISTS otp_codes (
+CREATE TABLE IF NOT EXISTS otp_codes ( 
+
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT NOT NULL,
     otp TEXT NOT NULL,

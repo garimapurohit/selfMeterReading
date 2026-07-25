@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./MeterReading.css";
 
-import Header from "../../components/Header/Header";
+import Navbar from "../../components/Navbar/Navbar";
+
 import Footer from "../../components/Footer/Footer";
 import ReadingForm from "../../components/ReadingForm/ReadingForm";
 // intially the form will have these values- and when user press clear it will reset to these valuse only
@@ -207,7 +208,7 @@ const handleSave = async (e) => {
 
   return (
     <div className="meter-page">
-      <Header />
+      <Navbar />
 
       <main className="meter-page__main">
         <ReadingForm
