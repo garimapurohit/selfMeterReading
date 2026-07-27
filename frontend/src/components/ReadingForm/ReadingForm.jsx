@@ -43,9 +43,9 @@ const ReadingForm = ({
               id="caNumber"
               name="caNumber"
               value={form.caNumber}
-              onChange={onChange}
-              placeholder="e.g. 1234567890"
-              autoComplete="on"
+              readOnly
+              autoComplete="off"
+
             />
             {errors.caNumber && (
               <span className="rform__error" role="alert">{errors.caNumber}</span>
@@ -75,9 +75,11 @@ const ReadingForm = ({
         <div className="rform__field">
           <label className="rform__label" htmlFor="readingDate">
             Reading Date <span className="rform__required">*</span>
-          </label>
-          <input
-            className={`rform__input rform__input--date ${errors.readingDate ? "rform__input--error" : ""}`}
+            </label>
+            <input
+             className={`rform__input rform__input--date ${
+              errors.readingDate ? "rform__input--error" : ""
+            }`}
             type="date"
             id="readingDate"
             name="readingDate"
@@ -85,11 +87,16 @@ const ReadingForm = ({
             onChange={onChange}
             min={getDaysAgoStr(2)}
             max={getTodayStr()}
-          />
-          {errors.readingDate && (
-            <span className="rform__error" role="alert">{errors.readingDate}</span>
-          )}
-        </div>
+            />
+
+  {errors.readingDate && (
+    <span className="rform__error" role="alert">
+      {errors.readingDate}
+    </span>
+  )}
+</div>
+
+        {/* Row 2: Reading Date */}
 
         {/* Row 3: KWH + KVH */}
         <div className="rform__row">

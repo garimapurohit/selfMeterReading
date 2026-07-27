@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./MeterReading.css";
 
 import Navbar from "../../components/Navbar/Navbar";
@@ -46,7 +46,16 @@ const MeterReading = () => {
   const [errors, setErrors] = useState(ErrorsInitial);
   const [kwhPreview, setKwhPreview] = useState(null);
   const [kvahPreview, setKvahPreview] = useState(null);
+useEffect(() => {
+  const user = JSON.parse(localStorage.getItem("user"));
 
+  if (user) {
+    setForm((prev) => ({
+      ...prev,
+      caNumber: user.caNumber,
+    }));
+  }
+}, []);
   const validate = (fields) => {
     const errs = { ...ErrorsInitial };
 

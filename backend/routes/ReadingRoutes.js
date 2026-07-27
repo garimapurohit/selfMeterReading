@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const upload = require("../middleware/upload");
 
-
 const {
   createReading,
   getAllReadings,
@@ -26,6 +25,5 @@ router.post(
 router.get("/", getAllReadings);
 router.get("/caNumber/:caNumber", getReadingsByCaNumber);
 router.get("/:id", getReadingsById);
-
 
 module.exports = router;

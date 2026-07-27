@@ -155,17 +155,21 @@ const Login = () => {
       );
 
       alert(response.data.message);
+// Save logged-in user
+      localStorage.setItem(
+        "user",
+        JSON.stringify(response.data.data)
+      );
 
       setAuthenticated();
-
       console.log(
         "Logged in User:",
         response.data.data
       );
-
       navigate("/reading");
 
-    } catch (err) {
+    }
+    catch (err) {
 
       alert(
         err.response?.data?.message ||
@@ -175,11 +179,7 @@ const Login = () => {
     }
 
   };
-
-  /* -----------------------------
-      UI
-  ------------------------------*/
-
+// ui part for login page with otp verification and email input field..
   return (
 
     <>
