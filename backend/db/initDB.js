@@ -56,7 +56,8 @@ CREATE TABLE IF NOT EXISTS meter_readings (
     readingDate TEXT NOT NULL,
     kwh REAL NOT NULL,
     kvh REAL NOT NULL,
-    imageName TEXT,
+    kwhImageName TEXT NOT NULL,
+    kvahImageName TEXT NOT NULL,
     createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (caNumber) REFERENCES users (caNumber) ON DELETE CASCADE
 )

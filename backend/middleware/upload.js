@@ -6,8 +6,7 @@ const upload = multer({
   storage,
 
   limits: {
-    fileSize: 5 * 1024 * 1024,
-    // 5mb total size 
+    fileSize: 5 * 1024 * 1024, // 5MB per file
   },
 
   fileFilter: (req, file, cb) => {
@@ -20,13 +19,9 @@ const upload = multer({
     if (allowedTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(
-        new Error(
-          "Not correct File typeee."
-        )
-      );
+      cb(new Error("Only JPG, JPEG and PNG files are allowed."));
     }
   },
 });
 
-module.exports = upload;
+module.exports = upload; // we are here exporting the entire object...

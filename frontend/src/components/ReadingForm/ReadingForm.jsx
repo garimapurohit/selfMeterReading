@@ -13,7 +13,8 @@ const getDaysAgoStr = (days) => {
 const ReadingForm = ({
   form,
   errors,
-  imagePreview,
+  kwhPreview,
+  kvahPreview,
   onChange,
   onFileChange,
   onSave,
@@ -29,7 +30,7 @@ const ReadingForm = ({
         </p>
       </div>
 
-      <form className="rform" onSubmit={onSave} Validate>
+      <form className="rform" onSubmit={onSave} noValidate>
        {/* Here in this row added two fields that are CA number and meter number.. both the field are compulsory and verifies for the correct data type */}
         <div className="rform__row">
           <div className="rform__field">
@@ -70,7 +71,6 @@ const ReadingForm = ({
             )}
           </div>
         </div>
-
         {/* Row 2: Reading Date */}
         <div className="rform__field">
           <label className="rform__label" htmlFor="readingDate">
@@ -142,12 +142,14 @@ const ReadingForm = ({
 
         {/* Row 4: Image Upload */}
         <ImageUpload
-          file={form.meterImage}
-          preview={imagePreview}
-          error={errors.meterImage}
-          onChange={onFileChange}
+        kwhFile={form.kwhImage}
+        kvahFile={form.kvahImage}
+        kwhPreview={kwhPreview}
+        kvahPreview={kvahPreview}
+        errors={errors}
+        onKwhChange={(e) => onFileChange(e)}
+        onKvahChange={(e) => onFileChange(e)}
         />
-
         {/* Action Buttons */}
         <div className="rform__actions">
           <button

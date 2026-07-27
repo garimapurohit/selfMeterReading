@@ -1,3 +1,5 @@
+
+// Create a new meter reading
 const db = require("../db/db");
 const { uploadImage } = require("../services/cloudinaryService");
 
@@ -5,7 +7,7 @@ const { uploadImage } = require("../services/cloudinaryService");
 const createReading = async (req, res) => {
   try {
     console.log("BODY:", req.body);
-    console.log("FILE:", req.file);
+    console.log("FILES:", req.files);
 
     const {
       caNumber,
@@ -15,29 +17,53 @@ const createReading = async (req, res) => {
       kvh,
     } = req.body;
 
-    // Check if image is uploaded
-    if (!req.file) {
+    // Check both images
+    if (
+      !req.files ||
+      !req.files.kwhImage ||
+      !req.files.kvahImage
+    ) {
       return res.status(400).json({
         success: false,
-        message: "Meter image is required",
+        message: "Both KWH and KVAH images are required",
       });
     }
 
-    // Upload image to Cloudinary
-    const imageName = await uploadImage(req.file.buffer);
+    const kwhImage = req.files.kwhImage[0];
+    const kvahImage = req.files.kvahImage[0];
 
-    // Save reading in database
+    // Upload images to Cloudinary
+    // const kwhImageName = await uploadImage(kwhImage.buffer);
+    // const kvahImageName = await uploadImage(kvahImage.buffer);
+    console.log("Uploading KWH image...");
+const kwhImageName = await uploadImage(kwhImage.buffer);
+console.log("✅ KWH uploaded:", kwhImageName);
+
+console.log("Uploading KVAH image...");
+const kvahImageName = await uploadImage(kvahImage.buffer);
+console.log("✅ KVAH uploaded:", kvahImageName);
+
+    // Save reading
     db.run(
       `INSERT INTO meter_readings
-      (caNumber, meterNumber, readingDate, kwh, kvh, imageName)
-      VALUES (?, ?, ?, ?, ?, ?)`,
+      (
+        caNumber,
+        meterNumber,
+        readingDate,
+        kwh,
+        kvh,
+        kwhImageName,
+        kvahImageName
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?)`,
       [
         caNumber,
         meterNumber,
         readingDate,
         kwh,
         kvh,
-        imageName,
+        kwhImageName,
+        kvahImageName,
       ],
       function (err) {
         if (err) {
@@ -65,6 +91,7 @@ const createReading = async (req, res) => {
     });
   }
 };
+
 // to get all readings in the database 
 const getAllReadings = (req, res) => {
   db.all(

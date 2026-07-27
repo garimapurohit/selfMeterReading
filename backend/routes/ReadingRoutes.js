@@ -12,7 +12,15 @@ const {
 
 router.post(
   "/",
-  upload.single("meterImage"),
+  upload.fields([
+    { name: "kwhImage",
+       maxCount: 1 
+    },
+
+    { name: "kvahImage", 
+      maxCount: 1 
+    }
+  ]),
   createReading
 );
 router.get("/", getAllReadings);

@@ -12,7 +12,8 @@ const FormInitial = {
   readingDate: "",
   kwh: "",
   kvh: "",
-  meterImage: null,
+  kwhImage: null,
+  kvahImage: null,
 };
 // At starting there won't be error it will be visble,,, after userr clickss the save button
 
@@ -22,8 +23,10 @@ const ErrorsInitial = {
   readingDate: "",
   kwh: "",
   kvh: "",
-  meterImage: "",
+  kwhImage: "",
+  kvahImage: "",
 };
+
 
 // converted string to get the date format.. becoz we need to compareee..
 const getTodayStr = () =>
@@ -41,7 +44,8 @@ const getDaysAgoStr = (days) => {
 const MeterReading = () => {
   const [form, setForm] = useState(FormInitial);
   const [errors, setErrors] = useState(ErrorsInitial);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [kwhPreview, setKwhPreview] = useState(null);
+  const [kvahPreview, setKvahPreview] = useState(null);
 
   const validate = (fields) => {
     const errs = { ...ErrorsInitial };
@@ -79,11 +83,12 @@ const MeterReading = () => {
     } else if (Number(fields.kvh) <= 0) {
       errs.kvh = "KVH must be a positive number.";
     }
-
-    if (!fields.meterImage) {
-      errs.meterImage = "Meter image is required.";
+    if (!fields.kwhImage) {
+      errs.kwhImage = "KWH image is required.";
     }
-
+    if (!fields.kvahImage) {
+      errs.kvahImage = "KVAH image is required.";
+    }
     return errs;
   };
 
@@ -100,56 +105,55 @@ const MeterReading = () => {
       [name]: "",
     }));
   };
+const handleImageChange = (e) => {
+  const { id, files } = e.target;
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
+  const file = files[0];
 
-    if (!file) return;
+  if (!file) return;
 
-    const allowed = [
-      "image/jpeg",
-      "image/jpg",
-      "image/png",
-    ];
+  const allowed = [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+  ];
 
-    if (!allowed.includes(file.type)) {
-      setErrors((prev) => ({
-        ...prev,
-        meterImage:
-          "Only .jpg, .jpeg, or .png files are allowed.",
-      }));
-
-      setForm((prev) => ({
-        ...prev,
-        meterImage: null,
-      }));
-
-      setImagePreview(null);
-
-      return;
-    }
-
-    setForm((prev) => ({
-      ...prev,
-      meterImage: file,
-    }));
-
+  if (!allowed.includes(file.type)) {
     setErrors((prev) => ({
       ...prev,
-      meterImage: "",
+      [id]: "Only .jpg, .jpeg or .png files are allowed.",
     }));
 
-    const reader = new FileReader();
+    return;
+  }
 
-    reader.onloadend = () => {
-      setImagePreview(reader.result);
-    };
+  setForm((prev) => ({
+    ...prev,
+    [id]: file,
+  }));
 
-    reader.readAsDataURL(file);
+  setErrors((prev) => ({
+    ...prev,
+    [id]: "",
+  }));
+
+  const reader = new FileReader();
+
+  reader.onloadend = () => {
+    if (id === "kwhImage") {
+      setKwhPreview(reader.result);
+    } else {
+      setKvahPreview(reader.result);
+    }
   };
 
+  reader.readAsDataURL(file);
+};
 const handleSave = async (e) => {
   e.preventDefault();
+  console.log("button clicked");
+    console.log(form);
+
 
   const errs = validate(form);
   setErrors(errs);
@@ -168,7 +172,8 @@ const handleSave = async (e) => {
   formData.append("readingDate", form.readingDate);
   formData.append("kwh", form.kwh);
   formData.append("kvh", form.kvh);
-  formData.append("meterImage", form.meterImage);
+  formData.append("kwhImage",form.kwhImage);
+  formData.append("kvahImage",form.kvahImage);
 
   try {
     const response = await fetch(
@@ -193,37 +198,42 @@ const handleSave = async (e) => {
   } catch (error) {
     console.error("Error:", error);
   }
-};  const handleClear = () => {
-    setForm(FormInitial);
-    setErrors(ErrorsInitial);
-    setImagePreview(null);
+}; 
+const handleClear = () => {
+  setForm(FormInitial);
+  setErrors(ErrorsInitial);
 
-    const fileInput =
-      document.getElementById("meterImage");
+  setKwhPreview(null);
+  setKvahPreview(null);
 
-    if (fileInput) {
-      fileInput.value = "";
-    }
-  };
+  const kwhInput = document.getElementById("kwhImage");
+  const kvahInput = document.getElementById("kvahImage");
 
+  if (kwhInput) kwhInput.value = "";
+  if (kvahInput) kvahInput.value = "";
+};
+
+  
   return (
     <div className="meter-page">
       <Navbar />
 
       <main className="meter-page__main">
         <ReadingForm
-          form={form}
-          errors={errors}
-          imagePreview={imagePreview}
-          onChange={handleChange}
-          onFileChange={handleFileChange}
-          onSave={handleSave}
-          onClear={handleClear}
+        form={form}
+        errors={errors}
+        kwhPreview={kwhPreview}
+        kvahPreview={kvahPreview}
+        onChange={handleChange}
+        onFileChange={handleImageChange}
+        onSave={handleSave}
+        onClear={handleClear}
         />
       </main>
 
       <Footer />
     </div>
   );
+  
 };
 export default MeterReading;
