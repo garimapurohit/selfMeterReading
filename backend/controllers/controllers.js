@@ -32,16 +32,8 @@ const createReading = async (req, res) => {
     const kwhImage = req.files.kwhImage[0];
     const kvahImage = req.files.kvahImage[0];
 
-    // Upload images to Cloudinary
-    // const kwhImageName = await uploadImage(kwhImage.buffer);
-    // const kvahImageName = await uploadImage(kvahImage.buffer);
-    console.log("Uploading KWH image...");
 const kwhImageName = await uploadImage(kwhImage.buffer);
-console.log("✅ KWH uploaded:", kwhImageName);
-
-console.log("Uploading KVAH image...");
 const kvahImageName = await uploadImage(kvahImage.buffer);
-console.log("✅ KVAH uploaded:", kvahImageName);
 
     // Save reading
     db.run(
