@@ -1,5 +1,4 @@
-
-// Create a new meter reading
+// use db object to interact with the database .. 
 const db = require("../db/db");
 const { uploadImage } = require("../services/cloudinaryService");
 
@@ -148,7 +147,6 @@ const getReadingsByCaNumber = (req, res) => {
           message: "Reading not found",
         });
       }
-
       res.status(200).json({
         success: true,
         data: rows,
