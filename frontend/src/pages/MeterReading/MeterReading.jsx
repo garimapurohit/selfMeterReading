@@ -5,6 +5,7 @@ import Navbar from "../../components/Navbar/Navbar";
 
 import Footer from "../../components/Footer/Footer";
 import ReadingForm from "../../components/ReadingForm/ReadingForm";
+import api from "../../services/api";
 // intially the form will have these values- and when user press clear it will reset to these valuse only
 const FormInitial = {
   caNumber: "",
@@ -184,30 +185,49 @@ const handleSave = async (e) => {
   formData.append("kwhImage",form.kwhImage);
   formData.append("kvahImage",form.kvahImage);
 
-  try {
-    const response = await fetch(
-      "http://localhost:5000/api/readings",
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
+  // try {
+  //   const response = await fetch(
+  //     "http://localhost:5000/api/readings",
+  //     {
+  //       method: "POST",
+  //       body: formData,
+  //     }
+  //   );
+  
 
-    const data = await response.json();
+//     const data = await response.json();
 
-    console.log("API Response:", data);
+//     console.log("API Response:", data);
 
-    if (data.success) {
-      alert("Reading Saved Successfully!");
+//     if (data.success) {
+//       alert("Reading Saved Successfully!");
 
-      handleClear();
-    } else {
-      alert(data.message);
-    }
-  } catch (error) {
-    console.error("Error:", error);
+//       handleClear();
+//     } else {
+//       alert(data.message);
+//     }
+//   } catch (error) {
+//     console.error("Error:", error);
+//   }
+// }; 
+try {
+  const response = await api.post("/readings", formData);
+
+  const data = response.data;
+
+  console.log("API Response:", data);
+
+  if (data.success) {
+    alert("Reading Saved Successfully!");
+
+    handleClear();
+  } else {
+    alert(data.message);
   }
-}; 
+} catch (error) {
+  console.error("Error:", error);
+}
+};
 const handleClear = () => {
   setForm(FormInitial);
   setErrors(ErrorsInitial);
