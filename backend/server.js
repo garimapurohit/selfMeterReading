@@ -7,7 +7,7 @@ require("./db/initDB");
 console.log("ROUTES FILE LOADED");
 
 
-const readingRoutes = require("./routes/readingRoutes");
+const readingRoutes = require("./routes/ReadingRoutes");
 const authRoutes = require("./routes/authRoutes");
 
 const app = express();
