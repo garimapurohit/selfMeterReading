@@ -185,31 +185,6 @@ const handleSave = async (e) => {
   formData.append("kwhImage",form.kwhImage);
   formData.append("kvahImage",form.kvahImage);
 
-  // try {
-  //   const response = await fetch(
-  //     "http://localhost:5000/api/readings",
-  //     {
-  //       method: "POST",
-  //       body: formData,
-  //     }
-  //   );
-  
-
-//     const data = await response.json();
-
-//     console.log("API Response:", data);
-
-//     if (data.success) {
-//       alert("Reading Saved Successfully!");
-
-//       handleClear();
-//     } else {
-//       alert(data.message);
-//     }
-//   } catch (error) {
-//     console.error("Error:", error);
-//   }
-// }; 
 try {
   const response = await api.post("/readings", formData);
 
